@@ -6,6 +6,9 @@
 var express = require("express");
 // NOT SURE IF WE NEED PATH
 // var path = require("path");
+
+// NOT SURE IF WE NEED BODY PARSER
+
 // ==============================================================================
 // EXPRESS CONFIGURATION
 // This sets up the basic properties for our express server
@@ -38,3 +41,17 @@ require("./app/routes/htmlRoutes")(app);
 app.listen(PORT, function() {
   console.log("App listening on PORT: " + PORT);
 });
+
+// END
+
+
+
+// ROUTE TO DISPLAY A STAR WARS CHARACTER JSON OBJECT
+// ===========================================================
+// app.get("/", function(req, res) {
+//   res.send("Welcome to the Star Wars Page!");
+// });
+
+// app.get("/yoda", function(req, res) {
+//   res.json(yoda);
+// });
