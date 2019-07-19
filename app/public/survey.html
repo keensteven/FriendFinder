@@ -6,11 +6,11 @@
   <meta charset="UTF-8">
   <title>FriendFinder</title>
 
-
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
-  <!-- Latest compiled and minified CSS & JS -->
 
+  <!-- Latest compiled and minified CSS & JS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery.js"></script>
@@ -18,20 +18,15 @@
   <!-- Font Awesome Glyphicons -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
-  <!-- Chosen -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script> -->
-
   <style type="text/css">
     body {
       font-family: 'Roboto', sans-serif;
-      font-weight: 300;
+      font-weight: 400;
     }
 
     h1 {
       font-family: 'Alfa Slab One', cursive;
       font-size: 3.2em;
-      /* font-weight: 800 !important; */
       letter-spacing: 0px;
       color: black;
     }
@@ -39,7 +34,6 @@
     h2 {
       font-size: 2em;
       font-family: 'Roboto', sans-serif;
-      /* font-weight: 800 !important; */
       letter-spacing: 0px;
       font-weight: 300;
       color: black;
@@ -48,20 +42,17 @@
     h3 {
       padding-top: 40px;
       font-family: 'Alfa Slab One', cursive;
-      /* font-weight: 500; */
       font-size: 1.4em
     }
 
     h5 {
       font-family: 'Roboto', sans-serif;
       font-weight: 700;
-
     }
 
     .btn {
       /* width: 153px; */
       height: 47px;
-      /* background-color: #1e2e3d !important; */
       color: #ffffff;
     }
 
@@ -74,6 +65,9 @@
       font-size: 1em
     }
 
+    .lighttext {
+      font-weight: 300
+    }
   </style>
 </head>
 
@@ -98,7 +92,6 @@
 
 
     <div class="card text-white bg-primary mb-2 mt-5" style="max-width: 450px">
-      <!-- <div class="card-header"><h2>Please answer a few questions</h2></div> -->
       <div class="card-body">
         <h5 class="card-title">Please answer a few questions</h5>
         <p class="card-text">Answer the following questions on a scale of 1 to 5 with 1 being the least true and 5 being
@@ -235,24 +228,24 @@
     <br>
 
     <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary btn-lg mb-5" id="submit"><i class="fa fa-check-circle"
+    <button type="submit" class="btn btn-primary btn-lg mb-5" id="submit" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-check-circle"
         aria-hidden="true"></i>
       Submit</button>
     <br>
+
+    <!-- Modal Button -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
       Launch demo modal
     </button>
 
     <hr>
     <footer class="footer">
-      <p class="mb-5"><a href="/api/friends">API Friends List</a> | <a
-          href="https://github.com/afhaque/friendfinder">GitHub
+      <p class="lighttext mb-5"><a href="/api/friends">API Friends List</a> | <a
+          href="https://github.com/keensteven/FriendFinder.git">GitHub
           Repo</a></p>
     </footer>
 
   </div>
-
-  <!-- Button trigger modal -->
 
 
   <!-- Modal -->
@@ -283,27 +276,73 @@
 
 
   <script type="text/javascript">
+
+
+
+  // In this code, jQuery is used to "download" the data from our server
+  // We then dynamically display this content in our table. This is very similar to the group projects you just completed.
+  // It's also very similar to the NYT search application. In fact, I copied a ton of code from there.
+
+  function runTableQuery() {
+    var currentURL = window.location.origin;
+    // The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
+    $.ajax({ url: "/api/friends", method: "GET" })
+      .then(function(friendData) {
+
+        // Here we then log the friendData to console, where it will show up as an object.
+        console.log(friendData);
+        console.log("------------------------------------");
+        console.log("URL: " + currentURL + "/api/friends");
+
+        // Loop through and display each of the customers
+        // for (var i = 0; i < friendData.length; i++) {
+
+        //   // Get a reference to the tableList element and populate it with tables
+        //   var tableList = $("#tableList");
+
+        //   // Then display the fields in the HTML (Section Name, Date, URL)
+        //   var listItem = $("<li class='list-group-item mt-4'>");
+
+        //   listItem.append(
+        //     $("<h2>").text("Table #" + (i + 1)),
+        //     $("<hr>"),
+        //     $("<h2>").text("ID: " + friendData[i].customerID),
+        //     $("<h2>").text("Name: " + friendData[i].customerName),
+        //     $("<h2>").text("Email: " + friendData[i].customerEmail),
+        //     $("<h2>").text("Phone: " + friendData[i].phoneNumber)
+        //   );
+
+        //   tableList.append(listItem);
+        // }
+      });
+  }
+
+  runTableQuery();
+
+
+
+
     $('#submit').on('click', function (e) {
-      // console.log($("#question1").val())
-      var answers = []
-      answers.push($("#question1").val())
-      answers.push($("#question2").val())
-      answers.push($("#question3").val())
-      answers.push($("#question4").val())
-      answers.push($("#question5").val())
-      answers.push($("#question6").val())
-      answers.push($("#question7").val())
-      answers.push($("#question8").val())
-      answers.push($("#question9").val())
-      answers.push($("#question10").val())
-      let friend = {}
-      friend.name = $('#name').val();
-      friend.photo = $('#photo').val();
-      friend.answers = answers;
+      console.log($("#question1").val())
+      // var answers = []
+      // answers.push($("#question1").val())
+      // answers.push($("#question2").val())
+      // answers.push($("#question3").val())
+      // answers.push($("#question4").val())
+      // answers.push($("#question5").val())
+      // answers.push($("#question6").val())
+      // answers.push($("#question7").val())
+      // answers.push($("#question8").val())
+      // answers.push($("#question9").val())
+      // answers.push($("#question10").val())
+      // let friend = {}
+      // friend.name = $('#name').val();
+      // friend.photo = $('#photo').val();
+      // friend.answers = answers;
 
-      $.post("/api/friends", friend, function (res) {
+      // $.post("/api/friends", friend, function (res) {
 
-      })
+      // })
     })
   </script>
 
