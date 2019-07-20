@@ -14,6 +14,12 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
 
   <!-- Font Awesome Glyphicons -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -57,6 +63,7 @@
     }
 
     .container {
+      max-width: 760px;
       width: 64%
     }
 
@@ -227,17 +234,9 @@
     <br>
     <br>
 
-    <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary btn-lg mb-5" id="submit" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-check-circle"
-        aria-hidden="true"></i>
-      Submit</button>
-    <br>
-
-    <!-- Modal Button -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-      Launch demo modal
-    </button>
-
+    <!-- Submit Button & Modal Activation -->
+    <button type="submit" class="btn btn-primary btn-lg mb-5" data-toggle="modal" data-target="#exampleModal">
+        <i class="fa fa-check-circle" aria-hidden="true"></i> Submit </button>
     <hr>
     <footer class="footer">
       <p class="lighttext mb-5"><a href="/api/friends">API Friends List</a> | <a
@@ -249,112 +248,84 @@
 
 
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title pt-1" id="exampleModalLabel">Congratulations, we've found your match!</h4>
-
+            <h4 class="modal-title pt-1" id="resultsModalLabel">Congratulations, we've found your match!</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body text-center">
-          <img class="pb-3 pt-1" src="friend_photo.jpg" alt="">
-          <br>
-          <h5 class="mt-2">Rolando Florez</h5>
-        </div>
+          <img class="pb-3 pt-1"
+          src="https://firebasestorage.googleapis.com/v0/b/friendfinder-ae18a.appspot.com/o/friend_photo.jpg?alt=media&token=2dea72e4-7d6f-4f52-9681-428b97a06d52"
+          alt="">
+        <br>        
+        <h5 class="mt-2">Rolando Florez</h5>
+      </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
         </div>
       </div>
     </div>
   </div>
 
 
-
   <script type="text/javascript">
+    $('#submit').on('click', function () {
+      // console.log($("#question1").val())
 
+      //Form validation
+      function validateForm() {
+        var isValid = true;
+        $(".form-control").each(function () {
+          if ($(this).val() === "") {
+            isValid = false;
+          }
+        });
+        return isValid;
+      }
 
+      // If all required fields are filled
+      if (validateForm()) {
+        // create an object for the user's data
+        var userData = {
+          name: $("#name").val(),
+          photo: $("#photo").val(),
+          scores: [
+            $("#question1").val(),
+            $("#question2").val(),
+            $("#question3").val(),
+            $("#question4").val(),
+            $("#question5").val(),
+            $("#question6").val(),
+            $("#question7").val(),
+            $("#question8").val(),
+            $("#question9").val(),
+            $("#question10").val()
+          ]
+        };
+        // grab the URL of the website
+        var currentURL = window.location.origin;
 
-  // In this code, jQuery is used to "download" the data from our server
-  // We then dynamically display this content in our table. This is very similar to the group projects you just completed.
-  // It's also very similar to the NYT search application. In fact, I copied a ton of code from there.
+        // AJAX post the data to the friends API
+        $.post(currentURL + "/api/friends", userData, function (data) {
+          // Grab the result from the AJAX post so that the best match's name and photo are displayed
+          $("#matchName").text(data.name);
+          $("#matchImg").attr("src", data.photo);
 
-  function runTableQuery() {
-    var currentURL = window.location.origin;
-    // The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
-    $.ajax({ url: "/api/friends", method: "GET" })
-      .then(function(friendData) {
-
-        // Here we then log the friendData to console, where it will show up as an object.
-        console.log(friendData);
-        console.log("------------------------------------");
-        console.log("URL: " + currentURL + "/api/friends");
-
-        // Loop through and display each of the customers
-        // for (var i = 0; i < friendData.length; i++) {
-
-        //   // Get a reference to the tableList element and populate it with tables
-        //   var tableList = $("#tableList");
-
-        //   // Then display the fields in the HTML (Section Name, Date, URL)
-        //   var listItem = $("<li class='list-group-item mt-4'>");
-
-        //   listItem.append(
-        //     $("<h2>").text("Table #" + (i + 1)),
-        //     $("<hr>"),
-        //     $("<h2>").text("ID: " + friendData[i].customerID),
-        //     $("<h2>").text("Name: " + friendData[i].customerName),
-        //     $("<h2>").text("Email: " + friendData[i].customerEmail),
-        //     $("<h2>").text("Phone: " + friendData[i].phoneNumber)
-        //   );
-
-        //   tableList.append(listItem);
-        // }
-      });
-  }
-
-  runTableQuery();
-
-
-
-
-    $('#submit').on('click', function (e) {
-      console.log($("#question1").val())
-      // var answers = []
-      // answers.push($("#question1").val())
-      // answers.push($("#question2").val())
-      // answers.push($("#question3").val())
-      // answers.push($("#question4").val())
-      // answers.push($("#question5").val())
-      // answers.push($("#question6").val())
-      // answers.push($("#question7").val())
-      // answers.push($("#question8").val())
-      // answers.push($("#question9").val())
-      // answers.push($("#question10").val())
-      // let friend = {}
-      // friend.name = $('#name').val();
-      // friend.photo = $('#photo').val();
-      // friend.answers = answers;
-
-      // $.post("/api/friends", friend, function (res) {
-
-      // })
-    })
+          // show the modal with the best match
+          $("#resultsModal").modal["toggle"];
+        });
+      } else {
+        alert("Please fill out all fields before submitting");
+      }
+      return false;
+    });
   </script>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-  </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-  </script>
+
 </body>
 
 </html>

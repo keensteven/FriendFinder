@@ -1,11 +1,8 @@
 // DEPENDENCIES - npm packages that give our server useful functionality
 var express = require("express");
-
-// NOT SURE IF WE NEED PATH
-// var path = require("path");
-
-// NOT SURE IF WE NEED BODY PARSER
 var bodyParser = require("body-parser");
+var path = require("path");
+
 
 // EXPRESS CONFIGURATION - sets up the basic properties for our express server
 // Tells node that we are creating an "express" server
@@ -14,15 +11,23 @@ var app = express();
 // Sets an initial port. We"ll use this later in our listener
 var PORT = process.env.PORT || 8080;
 
-// Sets up the Express app to handle data parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// create application/x-www-form-urlencoded parser
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// parse various different custom JSON types as JSON
+app.use(bodyParser.json({ type: 'application/*+json' }))
+ 
+// parse some custom thing into a Buffer
+app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
+ 
+// parse an HTML body into a string
+app.use(bodyParser.text({ type: 'text/html' }))
 
 // ROUTER
 // The below points our server to a series of "route" files.
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs.
-require("./app/routes/apiRoutes")(app);
-require("./app/routes/htmlRoutes")(app);
+require("./app/routes/apiRoutes.js")(app);
+require("./app/routes/htmlRoutes.js")(app);
 
 // LISTENER - effectively "starts" our server
 app.listen(PORT, function() {
@@ -30,15 +35,3 @@ app.listen(PORT, function() {
 });
 
 // END
-
-
-
-// ROUTE TO DISPLAY A STAR WARS CHARACTER JSON OBJECT
-// ===========================================================
-// app.get("/", function(req, res) {
-//   res.send("Welcome to the Star Wars Page!");
-// });
-
-// app.get("/yoda", function(req, res) {
-//   res.json(yoda);
-// });
