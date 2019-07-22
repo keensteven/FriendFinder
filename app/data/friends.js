@@ -72,8 +72,8 @@ var friends = [
       },
 
       {
-            name: 'Joe Simmons',
-            photo: 'https://firebasestorage.googleapis.com/v0/b/friendfinder-ae18a.appspot.com/o/joe.jpg?alt=media&token=0e61adbc-d929-4837-9f48-aa3e470ba308',
+            name: 'Joseph Simmons',
+            photo: 'https://firebasestorage.googleapis.com/v0/b/friendfinder-ae18a.appspot.com/o/joe.jpg?alt=media&token=05488d33-9f61-4007-8d27-5d0b778e1df5',
             scores: [
                   "1",
                   "2",
