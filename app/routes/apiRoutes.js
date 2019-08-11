@@ -30,7 +30,7 @@ module.exports = function (app) {
 
     // let myvalues = req.body;
 
-    console.log(req.body)
+    console.log(req.body);
     // res.send("route works")
 
     // Take the result of the user's survey POST and parse it

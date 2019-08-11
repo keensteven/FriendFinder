@@ -1,12 +1,8 @@
-// DEPENDENCIES - npm packages that give our server useful functionality
-var express = require("express");
-var bodyParser = require("body-parser");
-var path = require("path");
-
-
-// EXPRESS CONFIGURATION - sets up the basic properties for our express server
+var express = require('express');
 // Tells node that we are creating an "express" server
 var app = express();
+var bodyParser = require('body-parser');
+var path = require("path");
 
 // Sets an initial port. We"ll use this later in our listener
 var PORT = process.env.PORT || 8080;
@@ -34,4 +30,3 @@ app.listen(PORT, function() {
   console.log("App listening on PORT: " + PORT);
 });
 
-// END
